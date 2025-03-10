@@ -1,6 +1,6 @@
-use actix_web::{web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{App, HttpServer, };
 mod healthchecks;
-
+mod notifications;
 use crate::healthchecks::router::health;
 
 

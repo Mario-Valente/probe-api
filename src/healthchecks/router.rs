@@ -1,6 +1,9 @@
-use actix_web::{post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{post,  HttpResponse, Responder};
 use tokio::time::{self, Duration, Interval};
 use reqwest;
+
+use crate::notifications::notifications::notifications_slack;
+
 
 
 
@@ -21,7 +24,9 @@ pub async fn health(req_body: String) -> impl Responder {
                     if response.status().is_success() {
                         println!("Health check passed for {}", url);
                     } else {
-                        println!("Health check failed for {}: {:?}", url, response.status());
+                        println!("Health check failed for {}", url);
+                        notifications_slack(response.status().as_u16());
+                        break;
                     }
                 }
                 Err(e) => {
